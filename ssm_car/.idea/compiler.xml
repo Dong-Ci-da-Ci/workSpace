@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="freemarker-demo" />
+        <module name="reflect-demo" />
+        <module name="shop-api" />
+        <module name="shop_admin" />
+        <module name="ssm_car" />
+        <module name="ssm_movie" />
+        <module name="ssm_testDemo01" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ssm_car_mp" target="1.8" />
+      <module name="ssm_carTwo" target="1.8" />
+      <module name="TestProject" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

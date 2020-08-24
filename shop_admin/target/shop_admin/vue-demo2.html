@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src = "js/vue.js"></script>
+</head>
+<body>
+<div id = "student">
+    <table border="1">
+        <tr>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>爱好</th>
+            <th>班级</th>
+            <th>操作</th>
+        </tr>
+        <tr v-for="(student,index) in list">
+            <td>{{student.name}}</td>
+            <td>{{student.age}}</td>
+            <td>{{student.hobby}}</td>
+            <td>{{student.cls}}</td>
+            <td>
+                <input type="button" value="删除" @click="deleteStudent(index)">
+                <input type="button" value="修改" @click="toUpdateStudent(index)">
+            </td>
+        </tr>
+    </table>
+    姓名<input v-model="name"/>
+    年龄<input v-model="age"/>
+    爱好<input v-model="hobby"/>
+    班级<input v-model="cls"/>
+    <input type="button" value="添加" @click="addStudent()"/>
+    <input type="button" value="修改" @click="updateStudent()"/>
+</div>
+
+</body>
+<script>
+    var student;
+
+    new Vue({
+        el : "#student",
+        data : {
+            name : "",
+            list : [
+                {name:"吓跑",age:18,hobby:"吃,喝",cls:"1907A"},
+                {name:"哈哈",age:18,hobby:"吃,喝",cls:"1907A"},
+                {name:"嘻嘻",age:18,hobby:"吃,喝",cls:"1907A"},
+
+            ]
+
+        },
+        methods:{
+            addStudent:function(){
+                this.list.push({name:this.name,age:this.age,hobby:this.hobby,cls:this.cls});
+                this.name = "";
+                this.age = "";
+                this.hobby = "";
+                this.cls = "";
+            },
+
+            deleteStudent:function(index){
+                this.list.splice(index,1);
+            },
+
+            toUpdateStudent:function(index){
+                student = this.list[index];
+                this.name = student.name;
+                this.age = student.age;
+                this.hobby = student.hobby;
+                this.cls = student.cls;
+            },
+
+
+
+            updateStudent:function () {
+                student.name = this.name;
+                student.age = this.age;
+                student.hobby = this.hobby;
+                student.cls = this.cls;
+
+                this.name = "";
+                this.age = "";
+                this.hobby = "";
+                this.cls = "";
+            }
+        }
+
+    })
+</script>
+</html>

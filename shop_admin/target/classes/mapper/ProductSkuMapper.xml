@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+	例如namespace="com.szh.mapper.personMapper"就是com.szh.mapper(包名)+personMapper(personMapper.xml文件去除后缀) -->
+<mapper namespace="com.fh.mapper.ProductSkuMapper">
+
+
+    <!-- 添加商品属性值 -->
+    <insert id="batchAddProductSku" parameterType="ProductSku" useGeneratedKeys="true" keyProperty="id">
+        insert into t_shop_product_sku (productId,properties,price,stock)
+        values
+        <foreach collection="list" item="p" separator=",">
+            (#{p.productId},#{p.properties},#{p.price},#{p.stock})
+        </foreach>
+    </insert>
+
+    <!-- 根据商品id查询商品sku信息 -->
+    <select id="queryProductSkuList" resultType="ProductSku" parameterType="int">
+        select * from t_shop_product_sku where productId = #{id}
+    </select>
+
+    <!-- 根据商品id删除商品SKU -->
+    <delete id="deleteProductSkuByProductId" parameterType="int">
+        delete from t_shop_product_sku where productId = #{productId}
+    </delete>
+
+
+
+
+</mapper>

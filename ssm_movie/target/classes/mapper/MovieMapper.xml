@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+   例如namespace="com.szh.mapper.personMapper"就是com.szh.mapper(包名)+personMapper(personMapper.xml文件去除后缀) -->
+<mapper namespace="com.fh.mapper.MovieMapper">
+
+    <!--条件查询-->
+    <sql id="whereSql">
+        <where>
+            <!--name 是前端传过来的值，CarName是实体类中的字段-->
+            <if test="name != null and name != ''">
+                and name like concat("%",#{name},"%")
+            </if>
+
+            <if test="minPrice != null">
+                <![CDATA[
+                  and price <= #{maxPrice}
+                ]]>
+            </if>
+            <!--因为这里有 ">"  "<=" 特殊字符所以要使用 <![CDATA[   ]]> 来注释-->
+            <if test="maxPrice != null">
+                <![CDATA[
+                  and price <= #{maxPrice}
+                ]]>
+            </if>
+
+            <if test="minDate != null">
+                <![CDATA[
+                  and showTime >= #{minDate}
+                ]]>
+            </if>
+            <if test="maxDate != null">
+                <![CDATA[
+                  and showTime <= #{maxDate}
+                ]]>
+            </if>
+
+            <if test="area != null and area != -1">
+                and tm.areaId = #{area}
+            </if>
+
+            <if test="status != null and status != ''">
+            <![CDATA[
+               and status = #{status}
+            ]]>
+            </if>
+
+
+            /*person需要在条件查询里面定义
+              service实现类中创建
+            */
+
+           <if test="person != null and person != ''">
+                <foreach collection="personList" item="person">
+                    and person like concat("%",#{person},"%")
+                </foreach>
+            </if>
+
+            <!--判断多选-->
+           <!-- <if test="person != null and person != ''">
+                and person like concat('%',#{person},'%')
+            </if>-->
+
+        </where>
+
+    </sql>
+
+
+    <!--查询总条数-->
+    <select id="queryCount" parameterType="conditionQuery" resultType="long">
+        select count(*) from t_movie_movie tm  <include refid="whereSql"></include>
+    </select>
+
+    <!--查询数据-->
+    <select id="queryList" parameterType="conditionQuery" resultType="Movie">
+        select * from t_movie_movie tm left join t_area ta on tm.areaId = ta.areaId
+        <include refid="whereSql"></include>
+        limit ${start},${length}
+    </select>
+
+    <!--查询下拉列表-->
+    <select id="queryPullDownList" resultType="Area">
+        select areaId,areaName from t_area
+    </select>
+
+    <!--新增-->
+    <insert id="addEntity" parameterType="Movie">
+       insert into t_movie_movie (name,num,price,imgUrl,status,person,showTime,updateTime,areaId,mid)
+       values (#{name},#{num},#{price},#{imgUrl},#{status},#{person},#{showTime},#{updateTime},#{areaId},#{mid})
+    </insert>
+
+    <!--回显-->
+    <select id="queryById" parameterType="int" resultType="Movie">
+        select * from t_movie_movie where mid = #{mid}
+    </select>
+
+    <!--修改-->
+    <update id="updateEntity" parameterType="movie">
+        update t_movie_movie set name=#{name},price=#{price},num=#{num},
+        imgUrl=#{imgUrl},status=#{status},person=#{person},showTime=#{showTime},updateTime=#{updateTime}
+        where mid = #{mid}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteEntity" parameterType="int">
+        delete from t_movie_movie where mid = #{id}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteBatchEntity" parameterType="int">
+        delete from t_movie_movie where mid in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

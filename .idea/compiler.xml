@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mybatisTest" />
+        <module name="winterWorkBookJPA" />
+        <module name="winterWorkCarJPATest" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="CarTest" target="1.8" />
+      <module name="mybatisTest" target="1.8" />
+      <module name="StudentSunday" target="1.8" />
+      <module name="winterWorkBookJPA" target="1.8" />
+      <module name="winterWorkCar" target="1.8" />
+      <module name="winterWorkCarJpa" target="1.8" />
+      <module name="winterWorkCarJPATest" target="1.8" />
+      <module name="winterWorkerBookJPA" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

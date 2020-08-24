@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src = "js/vue.js"></script>
+</head>
+<body>
+    <div id = "app">
+        {{name}} This is test {{message}} {{sex}}
+        <br>
+        姓名：<input v-model = "name">
+        性别:<input  type="radio" v-model = "sex" value="1">男<input  type="radio" v-model = "sex" value="2">女
+
+        <div v-if="5>4">
+            这是一段test
+        </div>
+
+        <div v-show="aaa">
+            <h1>我显示出来啦！！！</h1>
+        </div>
+
+        <input type="button" v-show = "!aaa" value="显示" @click = "show()">
+        <input type="button" v-show = "aaa" value="隐藏" @click = "hide()">
+
+        <p v-for="(student,index) in studentList">
+            {{index}}  {{student}}
+        </p>
+
+        <input @keydown.enter="bbb()">
+
+        <div @click = "show1" style="width: 400px;height: 400px;background-color: yellowgreen;">
+            <div @click = "show2" style="width: 300px;height: 300px;background-color: black;">
+                <div @click = "show3" style="width: 200px;height: 100px;background-color: red;">
+                    <h1>时间冒泡</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<script>
+    new Vue({
+        el:"#app",
+        data : {
+            name:"呵呵",
+            message : "欢迎使用VUE",
+            sex : "性别",
+            aaa : false,
+            studentList : ["小明","小黄","小绿"]
+        },
+        methods:{
+            show:function () {
+                this.aaa = true;
+            },
+            hide:function () {
+                this.aaa = false;
+            },
+            bbb:function () {
+              alert("我出来了");
+            },
+            show1:function () {
+                alert("div1")
+            },
+            show2:function () {
+                alert("div2")
+            },
+            show3:function () {
+                alert("div3")
+            },
+        }
+
+    })
+</script>
+</html>

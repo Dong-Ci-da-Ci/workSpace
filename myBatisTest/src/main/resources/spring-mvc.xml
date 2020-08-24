@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd 
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">   
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 配置视图解析器的前缀 -->
+		<property name="prefix" value="/WEB-INF/view/"/>
+		<!-- 配置视图解析器的后缀 -->	
+		<property name="suffix" value=".jsp"/>	
+		
+	</bean>
+    <!-- 开启注解 -->
+    <mvc:annotation-driven/>
+    <!-- 配置springMVC的扫描器 -->
+    <context:component-scan base-package="com.fh.Action"></context:component-scan>
+	   
+	
+		<!-- conversionService该bean实例用来解决springMVC存在的时间转换问题 -->
+		<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">    
+	        <property name="converters">    
+	            <list>    
+	            	<!-- list中的bean标签用来指明我们项目中的controller -->
+	                <!-- <bean class="com.fh.action.PhoneAction"/> -->    
+	            </list>    
+	        </property>    
+		</bean> 
+    	
+    	<!-- 指明我们配置的转换时间的bean实例 -->
+    	<mvc:annotation-driven conversion-service="conversionService" /> 
+
+		<!-- mapping代表的是地址
+    		/js/**   **代表的就是该文件夹下的所有文件全部都不被拦截
+    	 -->
+    	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
+	    <mvc:resources location="/images/" mapping="/images/**"></mvc:resources>
+	   
+
+
+</beans> 

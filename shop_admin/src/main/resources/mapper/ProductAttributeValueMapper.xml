@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+	例如namespace="com.szh.mapper.personMapper"就是com.szh.mapper(包名)+personMapper(personMapper.xml文件去除后缀) -->
+<mapper namespace="com.fh.mapper.ProductAttributeValueMapper">
+
+
+    <!-- 添加商品属性值 -->
+    <insert id="batchAddProductAttributeValue" parameterType="ProductAttributeValue" useGeneratedKeys="true" keyProperty="id">
+        insert into t_shop_product_value (attributeId,valueId,productId,isSku)
+        values
+        <foreach collection="list" item="p" separator=",">
+            (#{p.attributeId},#{p.valueId},#{p.productId},#{p.isSku})
+        </foreach>
+    </insert>
+
+    <!-- 根据商品id查询该商品下的属性值 -->
+    <select id="getAttributeListByProductId" parameterType="int" resultType="ProductAttributeValue">
+        select * from t_shop_product_value where productId = #{id}
+    </select>
+
+    <!-- 根据商品id删除商品属性 -->
+    <delete id="deleteProductAttributeByProductId" parameterType="int">
+        delete from t_shop_product_value where productId = #{productId}
+    </delete>
+
+
+</mapper>

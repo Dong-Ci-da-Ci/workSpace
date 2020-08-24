@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+   例如namespace="com.szh.mapper.personMapper"就是com.szh.mapper(包名)+personMapper(personMapper.xml文件去除后缀) -->
+<mapper namespace="com.fh.mapper.CarMapper">
+
+
+    <!--条件查询-->
+    <sql id="whereSql">
+        <where>
+            <!--name 是前端传过来的值，CarName是实体类中的字段-->
+            <if test="name != null and name != ''">
+                and carName like concat("%",#{name},"%")
+            </if>
+
+            <if test="minPrice != null">
+                and carPrice >= #{minPrice}
+            </if>
+            <!--因为这里有 ">"  "<=" 特殊字符所以要使用 <![CDATA[   ]]> 来注释-->
+            <if test="maxPrice != null">
+                <![CDATA[
+                  and carPrice <= #{maxPrice}
+                ]]>
+            </if>
+
+            <if test="minDate != null">
+                <![CDATA[
+                  and producedDate >= #{minDate}
+                ]]>
+            </if>
+            <if test="maxDate != null">
+                <![CDATA[
+                  and producedDate <= #{maxDate}
+                ]]>
+            </if>
+
+            <if test="type != null and type != -1">
+                and tc.brandId = #{type}
+            </if>
+
+            <if test="person != null and person != ''">
+                <foreach collection="personList" item="person">
+                    and configure like concat("%",#{person},"%")
+                </foreach>
+            </if>
+
+        </where>
+
+    </sql>
+
+
+    <!--查询总条数-->
+    <select id="queryCount" resultType="Long">
+        select count(*) from t_winterworkcar tc
+        <include refid="whereSql"></include>
+    </select>
+
+    <!--查询数据-->
+    <select id="queryCarList" resultType="Car" parameterType="conditionQuery" >
+        select * from t_winterworkcar tc left join t_winterworkcarbrand tb on tc.brandId = tb.brandId
+        <include refid="whereSql"></include>
+         limit ${start},${length}
+    </select>
+
+    <!--查询下拉列表-->
+    <select id="queryPullDownList" resultType="Brand">
+        select brandId,brandName from t_winterworkcarbrand
+    </select>
+
+    <!--新增-->
+    <insert id="addCar" parameterType="car">
+        insert into t_winterworkcar (carName,carPrice,isup,configure,introduction,producedDate,updateDate,brandId)
+        values (#{carName},#{carPrice},#{isup},#{configure},#{introduction},#{producedDate},#{updateDate},#{brandId})
+    </insert>
+
+    <!--删除-->
+    <delete id="deleteCar" parameterType="int">
+        delete from t_winterworkcar where carId = #{carId}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteBatchCar" parameterType="int">
+        delete from t_winterworkcar where carId in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--回显-->
+    <select id="queryCarById" parameterType="int" resultType="Car">
+        select * from t_winterworkcar where carId = #{carId}
+    </select>
+
+    <!--修改-->
+    <update id="updateCar" parameterType="car">
+        update t_winterworkcar set carName=#{carName},carPrice=#{carPrice},introduction=#{introduction},brandId=#{brandId},
+        isup=#{isup},producedDate=#{producedDate},configure=#{configure},updateDate=#{updateDate}
+        where carId = #{carId}
+    </update>
+
+    <!--查询导出数据-->
+    <select id="queryAllCarList" resultType="Car" >
+        select * from t_winterworkcar
+    </select>
+
+
+    <!--新增-->
+    <insert id="batchAddCar" parameterType="car">
+        insert into t_winterworkcar (carName,carPrice,isup,configure,introduction,producedDate,updateDate,brandId)
+        values
+        <foreach collection="list" item="car" separator=",">
+            (#{car.carName},#{car.carPrice},#{car.isup},#{car.configure},#{car.introduction},#{car.producedDate},#{car.updateDate},#{car.brandId})
+        </foreach>
+
+
+    </insert>
+
+    <select id="queryCarListNoPage" parameterType="conditionQuery" resultType="car">
+        select * from t_winterworkcar <include refid="whereSql"></include>
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

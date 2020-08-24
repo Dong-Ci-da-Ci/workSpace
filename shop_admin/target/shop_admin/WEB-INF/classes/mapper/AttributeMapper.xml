@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+   例如namespace="com.szh.mapper.personMapper"就是com.szh.mapper(包名)+personMapper(personMapper.xml文件去除后缀) -->
+<mapper namespace="com.fh.mapper.AttributeMapper">
+
+    <sql id="whereSql">
+        <where>
+            <if test="categoryId != null">
+                and categoryId = #{categoryId}
+            </if>
+        </where>
+    </sql>
+
+    <!--查询总条数-->
+    <select id="queryAttributeCount" parameterType="attributeQuery" resultType="long">
+      select count(*) from t_shop_attribute <include refid="whereSql"></include>
+    </select>
+
+    <!--查询分页数据-->
+    <select id="queryAttributeList" parameterType="attributeQuery" resultType="attribute">
+       select * from t_shop_attribute <include refid="whereSql"></include> limit #{start},#{length}
+    </select>
+
+    <!--新增数据-->
+    <insert id="addAttribute" parameterType="attribute" useGeneratedKeys="true" keyProperty="id">
+        insert into t_shop_attribute (name,type,inputType,selectType,addAble,categoryId)
+        values (#{name},#{type},#{inputType},#{selectType},#{addAble},#{categoryId})
+    </insert>
+
+    <select id="queryAttributeListByClassifyId" parameterType="int" resultType="Attribute">
+  SELECT
+	ta.*, GROUP_CONCAT(tav.`value`) as inputList,GROUP_CONCAT(tav.`id`) as valueIdList
+    FROM
+        t_shop_attribute ta
+    LEFT JOIN t_shop_attribute_value tav ON ta.id = tav.attrid
+    WHERE
+        ta.categoryId = #{categoryId}
+    GROUP BY
+	ta.id
+    </select>
+
+    
+
+    <!--回显-->
+    <select id="queryAttributeById" parameterType="int" resultType="attribute">
+        select * from t_shop_attribute where id = #{id}
+    </select>
+
+    <!--修改数据-->
+    <update id="updateAttribute" parameterType="attribute">
+        update t_shop_attribute set name=#{name},type=#{type},inputType=#{inputType},selectType=#{selectType},
+        addAble=#{addAble}
+        where id = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteAttribute" parameterType="int">
+      delete from t_shop_attribute where id = #{id}
+    </delete>
+
+
+</mapper>

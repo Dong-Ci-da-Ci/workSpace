@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+   例如namespace="com.szh.mapper.personMapper"就是com.szh.mapper(包名)+personMapper(personMapper.xml文件去除后缀) -->
+<mapper namespace="com.fh.mapper.MovieMapper">
+    <sql id="movieQueryColumn">
+        id,name,price,showTime
+    </sql>
+
+    <select id="queryMovieList" resultType="com.fh.model.Movie">
+        select <include refid="movieQueryColumn"/> from t_move
+    </select>
+
+    <select id="queryMovieName" parameterType="string" resultType="com.fh.model.Movie">
+        select <include refid="movieQueryColumn"/> from t_move where name like concat('%',#{abc},'%')
+    </select>
+
+    <select id="queryMovieid" parameterType="int" resultType="com.fh.model.Movie">
+        select <include refid="movieQueryColumn"/> from t_move where id = #{id}
+    </select>
+
+    <insert id="addMovie" parameterType="com.fh.model.Movie">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into t_move (name,price,showTime) values (#{name},#{price},#{showTime})
+    </insert>
+
+    <delete id="deleteMovie" parameterType="int">
+        delete from t_move where id = #{id}
+    </delete>
+
+    <delete id="deleteBatchMovie" parameterType="list">
+        delete from t_move where id in
+        <foreach collection="list" item="a" open="(" close=")" separator=",">
+            #{a}
+        </foreach>
+
+    </delete>
+
+    <update id="updateMovie" parameterType="com.fh.model.Movie">
+        update t_move set name = #{name},price=#{price},showTime=#{showTime} where id = #{id}
+    </update>
+
+    <!--查询用户名是否纯在-->
+    <select id="queryUserName" parameterType="string" resultType="com.fh.model.User">
+        select * from t_user where username like concat('%',#{abc},'%')
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

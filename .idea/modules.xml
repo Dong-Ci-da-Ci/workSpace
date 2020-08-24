@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CarTest/CarTest.iml" filepath="$PROJECT_DIR$/CarTest/CarTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mybatisTest/mybatisTest.iml" filepath="$PROJECT_DIR$/mybatisTest/mybatisTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/winterWorkBookJPA/winterWorkBookJPA.iml" filepath="$PROJECT_DIR$/winterWorkBookJPA/winterWorkBookJPA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/winterWorkCarJPATest/winterWorkCarJPATest.iml" filepath="$PROJECT_DIR$/winterWorkCarJPATest/winterWorkCarJPATest.iml" />
+    </modules>
+  </component>
+</project>

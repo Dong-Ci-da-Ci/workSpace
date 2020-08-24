@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+   例如namespace="com.szh.mapper.personMapper"就是com.szh.mapper(包名)+personMapper(personMapper.xml文件去除后缀) -->
+<mapper namespace="com.fh.mapper.ProductMapper">
+
+
+
+    <!--查询总条数-->
+    <select id="queryProductCount" parameterType="productQuery" resultType="long">
+      select count(*) from t_shop_product
+    </select>
+
+    <!--查询分页数据-->
+    <select id="queryProductList" parameterType="productQuery" resultType="product">
+       select * from t_shop_product  limit #{start},#{length}
+    </select>
+
+
+    <!--//查询商品商标-->
+    <select id="querybrandList" resultType="brand">
+        select id,name from t_shop_brand
+    </select>
+
+    <!--新增数据-->
+    <insert id="addProduct" parameterType="product" useGeneratedKeys="true" keyProperty="id">
+        insert into t_shop_product (name,title,brandId,isHot,status,price,mainImage,classifyId1,classifyId2,classifyId3,remark)
+        values (#{name},#{title},#{brandId},#{isHot},#{status},#{price},#{mainImage},#{classifyId1},#{classifyId2},#{classifyId3},#{remark})
+    </insert>
+
+    <!-- 根据id获取商品 -->
+    <select id="getProductById" parameterType="int" resultType="product">
+        select * from t_shop_product where id = #{id}
+    </select>
+
+    <!-- 修改商品 -->
+    <update id="updateProduct" parameterType="product">
+        update t_shop_product set name=#{name},title=#{title},price=#{price},isHot=#{isHot},status=#{status},classifyId1=#{classifyId1},
+        classifyId2=#{classifyId2},classifyId3=#{classifyId3},remark=#{remark} where id = #{id}
+    </update>
+
+
+
+
+
+
+
+
+
+
+</mapper>

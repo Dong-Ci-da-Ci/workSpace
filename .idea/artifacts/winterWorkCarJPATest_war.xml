@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="winterWorkCarJPATest:war">
+    <output-path>$PROJECT_DIR$/winterWorkCarJPATest/target</output-path>
+    <root id="archive" name="winterWorkCarJPATest.war">
+      <element id="artifact" artifact-name="winterWorkCarJPATest:war exploded" />
+    </root>
+  </artifact>
+</component>

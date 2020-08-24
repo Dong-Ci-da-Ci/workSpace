@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+   例如namespace="com.szh.mapper.personMapper"就是com.szh.mapper(包名)+personMapper(personMapper.xml文件去除后缀) -->
+<mapper namespace="com.fh.mapper.DrugMapper">
+
+    <sql id="whereSql">
+        <where>
+            <!--name 是前端传过来的值，CarName是实体类中的字段-->
+            <if test="name != null and name != ''">
+                and drugName like concat("%",#{name},"%")
+            </if>
+
+            <if test="minPrice != null">
+                and drugPrice >= #{minPrice}
+            </if>
+            <if test="maxPrice != null">
+                <![CDATA[
+                  and drugPrice <= #{maxPrice}
+                ]]>
+            </if>
+
+
+        </where>
+    </sql>
+
+
+    <!--查询总条数-->
+    <select id="queryDrugCount" parameterType="conditionQuery" resultType="long">
+      select count(*) from t_ssm_testDemo01Drug
+        <include refid="whereSql"></include>
+    </select>
+
+    <!--查询数据-->
+    <select id="queryDrugList" parameterType="conditionQuery" resultType="Drug">
+        select * from t_ssm_testDemo01Drug tt
+        left join t_area ta on tt.areaId = ta.areaId
+        left join t_brand tb on tt.brandId = tb.brandId
+        <include refid="whereSql"></include>
+        limit ${start},${length}
+
+    </select>
+
+    <!--新增-->
+    <insert id="addDrug" parameterType="Drug">
+        insert into t_ssm_testDemo01Drug (drugName,drugPrice,drugSales,drugStock,isOTC,person,producedDate,expiredDate,filePath,areaId,id)
+        values (#{drugName},#{drugPrice},#{drugSales},#{drugStock},#{isOTC},#{person},#{producedDate},#{expiredDate},#{filePath},#{areaId},#{id})
+    </insert>
+
+    <!--回显-->
+    <select id="queryById" parameterType="int" resultType="Drug">
+        select * from t_ssm_testDemo01Drug where id = #{id}
+    </select>
+
+
+
+
+    <!--修改-->
+    <update id="updateDrug" parameterType="drug">
+        update t_ssm_testDemo01Drug set drugName=#{drugName},drugPrice=#{drugPrice},drugSales=#{drugSales},drugStock=#{drugStock},
+        isOTC=#{isOTC},producedDate=#{producedDate},expiredDate=#{expiredDate},person=#{person},filePath=#{filePath}
+        where id = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteDrug" parameterType="int">
+        delete from t_ssm_testDemo01Drug where id = #{id}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteBatchDrug" parameterType="int">
+        delete from t_ssm_testDemo01Drug where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+        #{id}
+    </foreach>
+    </delete>
+
+    <!--查询下拉列表-->
+    <select id="queryPullDownList" resultType="Area">
+        select areaId,areaName from t_area
+    </select>
+
+
+
+
+
+
+</mapper>
